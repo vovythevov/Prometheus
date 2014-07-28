@@ -23,5 +23,5 @@ set(SCRIPT_MODE               "nightly") # "experimental", "continuous", "nightl
 
 set(GIT_BRANCH_NAME           "master")
 set(CTEST_USE_LAUNCHERS       ON)
-INCLUDE(/home/kitware/Dashboards/VesselView/VesselView-melcor-dashboard.cmake)
-
+set(vesselview_dir "/home/kitware/Dashboards/VesselView/")
+INCLUDE(${vesselview_dir}/Utilities/Dashboards/VesselView-melcor-dashboard.cmake)

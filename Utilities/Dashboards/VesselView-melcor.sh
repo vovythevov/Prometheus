@@ -18,9 +18,8 @@ if [ $# -eq 0 ] || [ "$1" != "NoUpdate" ]; then
 
   echo "Bootstrapping"
   # Get new nightly script
-  cp -f Utilities/Dashboards/VesselView-${MachineName}.sh ..
-  cd ..
-  chmod +x Utilities/Dashboards/VesselView-${MachineName}.sh
+  cp -f ./Utilities/Dashboards/VesselView-${MachineName}.sh ..
+  chmod +x ./Utilities/Dashboards/VesselView-${MachineName}.sh
 
   # Run new nightly script without updating again
   ./Utilities/Dashboards/VesselView-${MachineName}.sh NoUpdate
