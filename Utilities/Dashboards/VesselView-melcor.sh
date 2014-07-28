@@ -13,7 +13,8 @@ if [ $# -eq 0 ] || [ "$1" != "NoUpdate" ]; then
 
   # Update Dashboard repository
   cd ${DashboardDir}/VesselView
-  git pull -f
+  git fetch origin
+  git reset --hard origin/master
 
   echo "Bootstrapping"
   # Get new nightly script
