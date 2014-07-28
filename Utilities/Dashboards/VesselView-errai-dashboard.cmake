@@ -38,7 +38,7 @@ endmacro()
 #
 set(CTEST_PROJECT_NAME "VesselView")
 
-set(CTEST_DASHBOARD_ROOT "${CTEST_SCRIPT_DIRECTORY}")
+set(CTEST_DASHBOARD_ROOT "C:/Work/VesselView/Dashboards")
 set(CTEST_SITE "errai.kitware") # for example: mymachine.kitware, mymachine.dkfz, ...
 set(MY_OPERATING_SYSTEM "Windows") # Windows, Linux, Darwin...
 
