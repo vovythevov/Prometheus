@@ -454,6 +454,7 @@ if(${PROJECT_NAME} STREQUAL ${Slicer_MAIN_PROJECT})
 endif()
 
 # --------------------------------------------------------------------------
-#if(BUILD_TESTING)
-#  add_subdirectory(Testing)
-#endif()
+message("${APPLICATION_NAME}_BUILD_TESTING ${${APPLICATION_NAME}_BUILD_TESTING}")
+if(${APPLICATION_NAME}_BUILD_TESTING)
+  add_subdirectory(Testing)
+endif()
