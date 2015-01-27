@@ -137,9 +137,15 @@ void qSlicerTortuosityModuleWidget::runMetrics(int flag)
 {
   Q_D(qSlicerTortuosityModuleWidget);
   d->RunPushButton->setEnabled(false);
+  d->StatusLabel->setText("Running");
   if (!d->logic()->RunMetrics(d->currentSpatialObject, flag))
     {
     qCritical("Error while running metrics !");
+    d->StatusLabel->setText("Completed With Errors");
+    }
+  else
+    {
+    d->StatusLabel->setText("Completed");
     }
   d->RunPushButton->setChecked(false);
   d->RunPushButton->setEnabled(true);
