@@ -18,6 +18,7 @@
 
 # List all the modules (ordered by dependencies ) to build by Slicer
 set(modules
+  Tables
   TortuosityModule
   )
 
