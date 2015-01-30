@@ -48,6 +48,10 @@ public:
   // Create a table node from a filename
   vtkMRMLTableNode* AddTableNodeFromCSV(const char *fileName);
 
+  // Save a table node to CSV to the given filename
+  // Create a CSV storage node if necessary
+  bool SaveTableNodeToCSV(vtkMRMLTableNode* tableNode, const char* filename);
+
 protected:
   vtkSlicerTablesLogic( void );
   ~vtkSlicerTablesLogic( void );

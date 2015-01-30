@@ -38,6 +38,10 @@ set( ${KIT}_INCLUDE_DIRECTORIES
   ${vtkSlicer${MODULE_NAME}ModuleMRML_BINARY_DIR}
   ${vtkSlicerSpatialObjectsModuleMRML_SOURCE_DIR}
   ${vtkSlicerSpatialObjectsModuleMRML_BINARY_DIR}
+  ${vtkSlicerTablesModuleLogic_SOURCE_DIR}
+  ${vtkSlicerTablesModuleLogic_BINARY_DIR}
+  ${vtkSlicerTablesModuleMRMLCore_SOURCE_DIR}
+  ${vtkSlicerTablesModuleMRMLCore_BINARY_DIR}
   ${TubeTK_SOURCE_DIR}/Base/Filtering
   )
 
@@ -50,6 +54,8 @@ set( ${KIT}_TARGET_LIBRARIES
   ${ITK_LIBRARIES}
   ${MRML_LIBRARIES}
   vtkSlicerSpatialObjectsModuleMRML
+  vtkSlicerTablesModuleLogic
+  vtkSlicerTablesModuleMRMLCore
   )
 
 SlicerMacroBuildModuleLogic(

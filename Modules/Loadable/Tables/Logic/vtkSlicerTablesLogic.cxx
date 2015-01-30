@@ -77,3 +77,32 @@ vtkMRMLTableNode* vtkSlicerTablesLogic::AddTableNodeFromCSV(const char* filename
 
   return tableNode.GetPointer();
 }
+
+//------------------------------------------------------------------------------
+bool vtkSlicerTablesLogic
+::SaveTableNodeToCSV(vtkMRMLTableNode* tableNode, const char* filename)
+{
+  if (!tableNode || !this->GetMRMLScene())
+    {
+    return false;
+    }
+
+  vtkMRMLTableCSVStorageNode* csvStorageNode = NULL;
+  int i = 0;
+  while (i < tableNode->GetNumberOfStorageNodes() && !csvStorageNode)
+    {
+    csvStorageNode =
+      vtkMRMLTableCSVStorageNode::SafeDownCast(
+        tableNode->GetNthStorageNode(i));
+    ++i;
+    }
+
+  if (!csvStorageNode)
+    {
+    csvStorageNode =
+      vtkMRMLTableCSVStorageNode::SafeDownCast(
+        this->GetMRMLScene()->AddNode(vtkMRMLTableCSVStorageNode::New()));
+    }
+  csvStorageNode->SetFileName(filename);
+  return csvStorageNode->WriteData(tableNode);
+}

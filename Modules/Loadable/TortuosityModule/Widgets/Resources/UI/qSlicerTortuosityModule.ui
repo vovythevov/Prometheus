@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>280</width>
-    <height>302</height>
+    <height>480</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -21,12 +21,9 @@
     <number>0</number>
    </property>
    <item>
-    <widget class="ctkCollapsibleButton" name="InputCollapsibleButton">
-     <property name="text">
+    <widget class="ctkCollapsibleButton" name="InputCollapsibleButton" native="true">
+     <property name="text" stdset="0">
       <string>IO</string>
-     </property>
-     <property name="contentsFrameShape">
-      <enum>QFrame::StyledPanel</enum>
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="0">
@@ -55,12 +52,9 @@
     </widget>
    </item>
    <item>
-    <widget class="ctkCollapsibleButton" name="ParametersCollapsibleButton">
-     <property name="text">
+    <widget class="ctkCollapsibleButton" name="ParametersCollapsibleButton" native="true">
+     <property name="text" stdset="0">
       <string>CollapsibleButton</string>
-     </property>
-     <property name="contentsFrameShape">
-      <enum>QFrame::StyledPanel</enum>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
       <item row="0" column="1">
@@ -133,6 +127,9 @@
       </item>
      </layout>
     </widget>
+   </item>
+   <item>
+    <widget class="qMRMLTablesWidget" name="TableWidget"/>
    </item>
    <item>
     <spacer name="verticalSpacer">
@@ -230,10 +227,21 @@
    <header>qMRMLNodeComboBox.h</header>
   </customwidget>
   <customwidget>
+   <class>qMRMLWidget</class>
+   <extends>QWidget</extends>
+   <header>qMRMLWidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
    <class>qSlicerWidget</class>
    <extends>QWidget</extends>
    <header>qSlicerWidget.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>qMRMLTablesWidget</class>
+   <extends>qMRMLWidget</extends>
+   <header>qMRMLTablesWidget.h</header>
   </customwidget>
   <customwidget>
    <class>ctkCollapsibleButton</class>
@@ -257,6 +265,22 @@
     <hint type="destinationlabel">
      <x>175</x>
      <y>41</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>qSlicerTortuosityModule</sender>
+   <signal>mrmlSceneChanged(vtkMRMLScene*)</signal>
+   <receiver>TableWidget</receiver>
+   <slot>setMRMLScene(vtkMRMLScene*)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>139</x>
+     <y>239</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>139</x>
+     <y>233</y>
     </hint>
    </hints>
   </connection>

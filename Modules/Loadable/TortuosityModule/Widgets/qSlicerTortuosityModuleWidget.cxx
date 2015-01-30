@@ -31,6 +31,7 @@ limitations under the License.
 
 // MRML includes
 #include "vtkMRMLSpatialObjectsNode.h"
+#include "vtkSlicerTablesLogic.h"
 #include "vtkSlicerTortuosityLogic.h"
 
 //------------------------------------------------------------------------------
@@ -147,6 +148,11 @@ void qSlicerTortuosityModuleWidget::runMetrics(int flag)
     {
     d->StatusLabel->setText("Completed");
     }
+
+  d->TableWidget->setTableNode(
+    d->logic()->UpdateTableNodeFromMeasures(
+      d->currentSpatialObject, d->TableWidget->tableNode(), flag));
+
   d->RunPushButton->setChecked(false);
   d->RunPushButton->setEnabled(true);
 }

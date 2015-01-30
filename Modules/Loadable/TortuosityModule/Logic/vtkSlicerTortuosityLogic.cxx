@@ -27,8 +27,13 @@ limitations under the License.
 #include "itkVesselTubeSpatialObject.h"
 #include "itktubeTortuositySpatialObjectFilter.h"
 
-// Spatial object includes
+// Slicer includes
+#include <vtkMRMLScene.h>
+
+// VesselView includes
 #include "vtkMRMLSpatialObjectsNode.h"
+#include "vtkMRMLTableNode.h"
+#include "vtkSlicerTablesLogic.h"
 
 // VTK includes
 #include "vtkObjectFactory.h"
@@ -43,7 +48,11 @@ limitations under the License.
 
 #include <math.h>
 
+//------------------------------------------------------------------------------
 vtkStandardNewMacro(vtkSlicerTortuosityLogic);
+
+//------------------------------------------------------------------------------
+vtkCxxSetObjectMacro(vtkSlicerTortuosityLogic, TablesLogic, vtkSlicerTablesLogic);
 
 //------------------------------------------------------------------------------
 vtkSlicerTortuosityLogic::vtkSlicerTortuosityLogic( void )
@@ -322,12 +331,20 @@ std::vector<std::string> vtkSlicerTortuosityLogic::GetNamesFromFlag(int flag)
 }
 
 //------------------------------------------------------------------------------
-bool vtkSlicerTortuosityLogic
-::SaveAsCSV(vtkMRMLSpatialObjectsNode* node, const char* filename, int flag)
+vtkMRMLTableNode* vtkSlicerTortuosityLogic
+::UpdateTableNodeFromMeasures(vtkMRMLSpatialObjectsNode* node,
+                              vtkMRMLTableNode* tableNode,
+                              int flag)
 {
-  if (!node || !filename)
+  if (!node)
     {
     return false;
+    }
+
+  if (!tableNode)
+    {
+    tableNode = vtkMRMLTableNode::SafeDownCast(
+        this->GetMRMLScene()->AddNode(vtkMRMLTableNode::New()));
     }
 
   // Get the metric arrays
@@ -348,7 +365,7 @@ bool vtkSlicerTortuosityLogic
   if (metricArrays.size() <= 0)
     {
     std::cout<<"No array found for given flag: "<<flag<<std::endl;
-    return false;
+    return tableNode;
     }
 
   vtkIntArray* numberOfPointsArray =
@@ -357,12 +374,17 @@ bool vtkSlicerTortuosityLogic
     {
     std::cerr<<"Expected ''NumberOfPoints'' array on the node point data."
       <<std::endl<<"Cannot proceed."<<std::endl;
-    return false;
+    return tableNode;
     }
 
   // Create  the table. Each column has only one value per vessel
   // instead of one value per each point of the vessel.
-  vtkNew<vtkTable> table;
+  int wasModifying = tableNode->StartModify();
+  for (int j = 0; j < tableNode->GetTable()->GetNumberOfColumns(); ++j)
+    {
+    tableNode->GetTable()->RemoveColumn(j);
+    }
+
   for(std::vector<vtkDoubleArray*>::iterator it = metricArrays.begin();
     it != metricArrays.end(); ++it)
     {
@@ -374,18 +396,23 @@ bool vtkSlicerTortuosityLogic
       newArray->InsertNextValue((*it)->GetValue(j));
       }
 
-    table->AddColumn(newArray.GetPointer());
+    tableNode->GetTable()->AddColumn(newArray.GetPointer());
+    }
+  this->EndModify(wasModifying);
+
+  return tableNode;
+}
+
+//------------------------------------------------------------------------------
+bool vtkSlicerTortuosityLogic
+::SaveAsCSV(vtkMRMLSpatialObjectsNode* node, const char* filename, int flag)
+{
+  if (!node || !filename)
+    {
+    return false;
     }
 
-  // Write out the table to file
-  vtkNew<vtkDelimitedTextWriter> writer;
-  writer->SetFileName(filename);
-
-#if (VTK_MAJOR_VERSION < 6)
-  writer->SetInput(table.GetPointer());
-#else
-  writer->SetInputData(table.GetPointer());
-#endif
-
-  return writer->Write();
+  vtkMRMLTableNode* tableNode =
+    this->UpdateTableNodeFromMeasures(node, NULL, flag);
+  return this->GetTablesLogic()->SaveTableNodeToCSV(tableNode, filename);
 }

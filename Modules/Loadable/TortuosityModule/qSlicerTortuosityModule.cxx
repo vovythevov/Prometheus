@@ -31,6 +31,7 @@ limitations under the License.
 #include <qSlicerNodeWriter.h>
 
 // Tortuosity Logic includes
+#include "vtkSlicerTablesLogic.h"
 #include "vtkSlicerTortuosityLogic.h"
 
 // Tortuosity QTModule includes
@@ -96,7 +97,7 @@ QStringList qSlicerTortuosityModule::categories() const
 QStringList qSlicerTortuosityModule::dependencies() const
 {
   QStringList moduleDependencies;
-  moduleDependencies << "SpatialObjects";
+  moduleDependencies << "SpatialObjects" << "Tables";
 
   return moduleDependencies;
 }
@@ -108,6 +109,14 @@ void qSlicerTortuosityModule::setup()
 
   vtkSlicerTortuosityLogic* tortuosityLogic =
     vtkSlicerTortuosityLogic::SafeDownCast(this->logic());
+  qSlicerAbstractCoreModule* tablesModule =
+    qSlicerCoreApplication::application()->moduleManager()->module("Tables");
+  if (tablesModule)
+    {
+    vtkSlicerTablesLogic* tablesLogic =
+      vtkSlicerTablesLogic::SafeDownCast(tablesModule->logic());
+    tortuosityLogic->SetTablesLogic(tablesLogic);
+    }
 }
 
 //------------------------------------------------------------------------------

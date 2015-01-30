@@ -37,15 +37,20 @@ limitations under the License.
 #include <vector>
 
 class vtkDoubleArray;
+class vtkSlicerTablesLogic;
 class vtkMRMLSpatialObjectsNode;
+class vtkMRMLTableNode;
 
 class VTK_SLICER_TORTUOSITY_MODULE_LOGIC_EXPORT vtkSlicerTortuosityLogic
  : public vtkSlicerModuleLogic
 {
 public:
   static vtkSlicerTortuosityLogic *New( void );
-  vtkTypeMacro(vtkSlicerTortuosityLogic,vtkSlicerModuleLogic);
+  vtkTypeMacro(vtkSlicerTortuosityLogic, vtkSlicerModuleLogic);
   void PrintSelf(ostream& os, vtkIndent indent);
+
+  void SetTablesLogic(vtkSlicerTablesLogic* tablesLogic);
+  vtkGetObjectMacro(TablesLogic, vtkSlicerTablesLogic);
 
   // Different kind of metrics that can be run on a spatial object node.
   enum MeasureTypes
@@ -96,6 +101,12 @@ public:
   bool SaveAsCSV(
     vtkMRMLSpatialObjectsNode* node, const char* filename, int flag = All);
 
+  /// Update a table node from the given spatial object node and the given
+  /// metrics.
+  /// If no table node is given, a new one is created (and added to the scene).
+  vtkMRMLTableNode* UpdateTableNodeFromMeasures(
+    vtkMRMLSpatialObjectsNode* node, vtkMRMLTableNode* tableNode = NULL, int flag = All);
+
 protected:
   vtkSlicerTortuosityLogic( void );
   ~vtkSlicerTortuosityLogic( void );
@@ -114,8 +125,8 @@ protected:
   template<typename T>
     T* GetOrCreateArray(vtkMRMLSpatialObjectsNode* node, const char* name);
 
-private:
   std::map<int, std::string> FlagToArrayNames;
+  vtkSlicerTablesLogic* TablesLogic;
 
 }; // End class vtkSlicerTortuosityLogic
 
