@@ -25,8 +25,9 @@ limitations under the License.
 #include "vtkMRMLTableNode.h"
 
 // VTK includes
-#include <vtkTable.h>
 #include <vtkCallbackCommand.h>
+#include <vtkObjectFactory.h>
+#include <vtkTable.h>
 
 //----------------------------------------------------------------------------
 static void MRMLTableNodeCallback(vtkObject* vtkNotUsed(caller),
@@ -45,6 +46,9 @@ static void MRMLTableNodeCallback(vtkObject* vtkNotUsed(caller),
 }
 
 //----------------------------------------------------------------------------
+vtkMRMLNodeNewMacro(vtkMRMLTableNode);
+
+//----------------------------------------------------------------------------
 vtkMRMLTableNode::vtkMRMLTableNode()
 {
   this->Table = vtkTable::New();
@@ -60,12 +64,6 @@ vtkMRMLTableNode::~vtkMRMLTableNode()
 {
   this->Table->Delete();
   this->Callback->Delete();
-}
-
-//----------------------------------------------------------------------------
-vtkMRMLNode* vtkMRMLTableNode::CreateNodeInstance()
-{
-  return new vtkMRMLTableNode;
 }
 
 //----------------------------------------------------------------------------

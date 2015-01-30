@@ -39,7 +39,8 @@ class VTK_SLICER_TABLES_MRML_CORE_EXPORT vtkMRMLTableNode :
   public vtkMRMLStorableNode
 {
 public:
-  vtkTypeMacro(vtkMRMLTableNode,vtkMRMLStorableNode);
+  static vtkMRMLTableNode *New();
+  vtkTypeMacro(vtkMRMLTableNode, vtkMRMLStorableNode);
   void PrintSelf(ostream& os, vtkIndent indent);
 
   //--------------------------------------------------------------------------

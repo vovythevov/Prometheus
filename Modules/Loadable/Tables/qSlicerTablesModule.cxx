@@ -21,8 +21,14 @@
 // Qt includes
 #include <QtPlugin>
 
+// Slicer includes
+#include <qSlicerApplication.h>
+#include <qSlicerIOManager.h>
+
 // Tables includes
+#include "qSlicerTablesIO.h"
 #include "qSlicerTablesModule.h"
+#include "vtkSlicerTablesLogic.h"
 
 //-----------------------------------------------------------------------------
 Q_EXPORT_PLUGIN2(qSlicerTablesModule, qSlicerTablesModule);
@@ -103,6 +109,14 @@ QIcon qSlicerTablesModule::icon()const
 void qSlicerTablesModule::setup()
 {
   this->Superclass::setup();
+
+  // Configure Armatures logic
+  vtkSlicerTablesLogic* logic =
+    vtkSlicerTablesLogic::SafeDownCast(this->logic());
+
+  // Register IOs
+  qSlicerIOManager* ioManager = qSlicerApplication::application()->ioManager();
+  ioManager->registerIO(new qSlicerTablesIO(logic, this));
 }
 
 //-----------------------------------------------------------------------------
@@ -114,5 +128,5 @@ qSlicerAbstractModuleRepresentation * qSlicerTablesModule::createWidgetRepresent
 //-----------------------------------------------------------------------------
 vtkMRMLAbstractLogic* qSlicerTablesModule::createLogic()
 {
-  return NULL;
+  return vtkSlicerTablesLogic::New();
 }
